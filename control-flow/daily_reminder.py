@@ -1,3 +1,5 @@
+# daily_reminder.py
+
 # Prompt the user to enter a task description
 task = input("Enter your task: ")
 
@@ -24,5 +26,6 @@ if time_bound == "yes":
 else:
     reminder += ". Consider completing it when you have free time."
 
-# Print the customized reminder
-print(reminder)
+# Print the customized reminder with the required phrase
+print(f"Reminder: {reminder}")
+
