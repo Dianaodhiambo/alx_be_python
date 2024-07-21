@@ -1,5 +1,4 @@
 import unittest
-import importlib
 
 # Define the SimpleCalculator class
 class SimpleCalculator:
@@ -23,18 +22,19 @@ class SimpleCalculator:
             return None
         return a / b
 
-# Create a dummy module to simulate the import
+# Simulate the import
+class FakeImport:
+    """A class to simulate importing from a module."""
+    SimpleCalculator = SimpleCalculator
+
+# Add the FakeImport to sys.modules to simulate the import from `simple_calculator`
 import sys
-import types
+sys.modules['simple_calculator'] = FakeImport
 
-# Create a module object and add the SimpleCalculator class to it
-module = types.ModuleType("simple_calculator")
-sys.modules["simple_calculator"] = module
-module.SimpleCalculator = SimpleCalculator
-
-# Now we perform the import
+# Now perform the actual import
 from simple_calculator import SimpleCalculator
 
+# Define the unit test class
 class TestSimpleCalculator(unittest.TestCase):
     """Unit tests for SimpleCalculator class."""
 
@@ -42,38 +42,39 @@ class TestSimpleCalculator(unittest.TestCase):
         """Set up the SimpleCalculator instance before each test."""
         self.calc = SimpleCalculator()
 
-    def test_add(self):
+    def test_addition(self):
         """Test the add method."""
-        self.assertEqual(self.calc.add(2, 3), 5, "Addition test failed")
-        self.assertEqual(self.calc.add(-1, 1), 0, "Addition test failed")
-        self.assertEqual(self.calc.add(0, 0), 0, "Addition test failed")
-        self.assertEqual(self.calc.add(-1, -1), -2, "Addition test failed")
+        self.assertEqual(self.calc.add(2, 3), 5)
+        self.assertEqual(self.calc.add(-1, 1), 0)
+        self.assertEqual(self.calc.add(0, 0), 0)
+        self.assertEqual(self.calc.add(-1, -1), -2)
 
-    def test_subtract(self):
+    def test_subtraction(self):
         """Test the subtract method."""
-        self.assertEqual(self.calc.subtract(3, 2), 1, "Subtraction test failed")
-        self.assertEqual(self.calc.subtract(1, 1), 0, "Subtraction test failed")
-        self.assertEqual(self.calc.subtract(0, 0), 0, "Subtraction test failed")
-        self.assertEqual(self.calc.subtract(-1, -1), 0, "Subtraction test failed")
-        self.assertEqual(self.calc.subtract(1, -1), 2, "Subtraction test failed")
+        self.assertEqual(self.calc.subtract(3, 2), 1)
+        self.assertEqual(self.calc.subtract(1, 1), 0)
+        self.assertEqual(self.calc.subtract(0, 0), 0)
+        self.assertEqual(self.calc.subtract(-1, -1), 0)
+        self.assertEqual(self.calc.subtract(1, -1), 2)
 
     def test_multiply(self):
         """Test the multiply method."""
-        self.assertEqual(self.calc.multiply(2, 3), 6, "Multiplication test failed")
-        self.assertEqual(self.calc.multiply(-1, 1), -1, "Multiplication test failed")
-        self.assertEqual(self.calc.multiply(0, 10), 0, "Multiplication test failed")
-        self.assertEqual(self.calc.multiply(-1, -1), 1, "Multiplication test failed")
+        self.assertEqual(self.calc.multiply(2, 3), 6)
+        self.assertEqual(self.calc.multiply(-1, 1), -1)
+        self.assertEqual(self.calc.multiply(0, 10), 0)
+        self.assertEqual(self.calc.multiply(-1, -1), 1)
 
     def test_divide(self):
         """Test the divide method."""
-        self.assertEqual(self.calc.divide(6, 3), 2, "Division test failed")
-        self.assertEqual(self.calc.divide(-6, 3), -2, "Division test failed")
-        self.assertEqual(self.calc.divide(0, 1), 0, "Division test failed")
-        self.assertEqual(self.calc.divide(1, -1), -1, "Division test failed")
-        self.assertIsNone(self.calc.divide(1, 0), "Division by zero test failed")
+        self.assertEqual(self.calc.divide(6, 3), 2)
+        self.assertEqual(self.calc.divide(-6, 3), -2)
+        self.assertEqual(self.calc.divide(0, 1), 0)
+        self.assertEqual(self.calc.divide(1, -1), -1)
+        self.assertIsNone(self.calc.divide(1, 0))
 
 if __name__ == "__main__":
     unittest.main()
+
 
 
 
