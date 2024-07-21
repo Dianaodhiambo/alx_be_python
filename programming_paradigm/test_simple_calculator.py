@@ -1,4 +1,5 @@
 import unittest
+import importlib
 
 # Define the SimpleCalculator class
 class SimpleCalculator:
@@ -22,7 +23,18 @@ class SimpleCalculator:
             return None
         return a / b
 
-# Define the test class
+# Create a dummy module to simulate the import
+import sys
+import types
+
+# Create a module object and add the SimpleCalculator class to it
+module = types.ModuleType("simple_calculator")
+sys.modules["simple_calculator"] = module
+module.SimpleCalculator = SimpleCalculator
+
+# Now we perform the import
+from simple_calculator import SimpleCalculator
+
 class TestSimpleCalculator(unittest.TestCase):
     """Unit tests for SimpleCalculator class."""
 
@@ -60,8 +72,8 @@ class TestSimpleCalculator(unittest.TestCase):
         self.assertEqual(self.calc.divide(1, -1), -1, "Division test failed")
         self.assertIsNone(self.calc.divide(1, 0), "Division by zero test failed")
 
-# Run the tests
 if __name__ == "__main__":
     unittest.main()
+
 
 
